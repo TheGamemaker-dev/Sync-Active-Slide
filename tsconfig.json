@@ -29,5 +29,5 @@
   "buildOnSave": false,
   "ts-node": { 
     "files": true 
-  }
+  },
 }

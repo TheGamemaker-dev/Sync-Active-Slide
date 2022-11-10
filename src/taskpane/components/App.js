@@ -51,6 +51,16 @@ export default class App extends React.Component {
     );
   };
 
+  getSlideData = async () => {
+    Office.context.document.getSelectedDataAsync(Office.CoercionType.SlideRange, function (result) {
+      if (result.status == Office.AsyncResultStatus.Succeeded) {
+        console.log(result.value);
+      } else {
+        console.log(result.error);
+      }
+    });
+  };
+
   render() {
     const { title, isOfficeInitialized } = this.props;
 
@@ -71,7 +81,11 @@ export default class App extends React.Component {
           <p className="ms-font-l">
             Modify the source files, then click <b>Run</b>.
           </p>
-          <DefaultButton className="ms-welcome__action" iconProps={{ iconName: "ChevronRight" }} onClick={this.click}>
+          <DefaultButton
+            className="ms-welcome__action"
+            iconProps={{ iconName: "ChevronRight" }}
+            onClick={this.getSlideData}
+          >
             Run
           </DefaultButton>
         </HeroList>
