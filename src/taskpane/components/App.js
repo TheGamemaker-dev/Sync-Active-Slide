@@ -52,11 +52,23 @@ export default class App extends React.Component {
   };
 
   getSlideData = async () => {
+    let id = 0;
     Office.context.document.getSelectedDataAsync(Office.CoercionType.SlideRange, function (result) {
       if (result.status == Office.AsyncResultStatus.Succeeded) {
-        console.log(result.value);
+        id = result.value.slides[0].id;
+        console.log(id);
       } else {
         console.log(result.error);
+      }
+    });
+
+    return id;
+  };
+
+  addText = async (text = "") => {
+    Office.context.document.setSelectedDataAsync(text, { coercionType: Office.CoercionType.Text }, function (result) {
+      if (result.status === Office.AsyncResultStatus.Failed) {
+        console.error(result.error.message);
       }
     });
   };
@@ -84,7 +96,11 @@ export default class App extends React.Component {
           <DefaultButton
             className="ms-welcome__action"
             iconProps={{ iconName: "ChevronRight" }}
-            onClick={this.getSlideData}
+            onClick={() =>
+              this.getSlideData().then((id) => {
+                this.addText(id.toString());
+              })
+            }
           >
             Run
           </DefaultButton>
